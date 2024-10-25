@@ -1,16 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { TaskList } from './components/taskList';
 import { TaskDetails } from './components/taskDetails';
 import './App.css';
-import TaskStore from './store/TaskStore';
 
-const App = observer(() => {
+const App: React.FC = observer(() => {
     console.log('Эта панель недоступна для глаз, простых смертных!');
-    useEffect(() => {
-        TaskStore.defaultVisibleTasks();
-    }, []);
-
     return (
         <div className='app-container'>
             <div className='sidebar'>

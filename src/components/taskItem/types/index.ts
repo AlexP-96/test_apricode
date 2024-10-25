@@ -1,6 +1,7 @@
+import { ITaskStore } from '../../../store/types';
 
-export interface ITask<T> {
-    task: T,
+export interface ITask {
+    task: ITaskStore
 }
 
 export interface IObjectTask {

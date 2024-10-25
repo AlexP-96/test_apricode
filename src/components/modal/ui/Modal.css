@@ -1,0 +1,30 @@
+.modal__bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #868686;
+    top: 0;
+    left: 0;
+    opacity: 0.1;
+    cursor: pointer;
+}
+
+.item__edit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.item__edit:before {
+    content: '';
+    position: fixed;
+    width: 120%;
+    height: 120%;
+    background: #efefef;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px
+}

@@ -4,37 +4,37 @@ import React, {
 } from 'react';
 import { observer } from 'mobx-react-lite';
 import './TaskItem.css';
+import { Modal } from '../../modal';
 import {
-    IObjectTask,
     ITask,
 } from '../types';
 import TaskStore from '../../../store/TaskStore';
 
-export const TaskItem = observer(({ task }: React.PropsWithChildren<ITask<IObjectTask>>) => {
+export const TaskItem: React.FC<React.PropsWithChildren<ITask>> = observer(({ task }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [checked, setChecked] = useState(false);
-    const [editing, setEditing] = useState(false);
 
     const handlerOpenEdit = () => {
-        setEditing(true);
+        console.log(TaskStore);
     };
+
     const handlerChecked = (e: React.MouseEvent<HTMLElement>) => {
         setIsExpanded(!isExpanded);
     };
-    const handlerCloseEdit = () => {
-        setEditing(false);
-    };
-    const handlerDeleteTask = () => {
-        // TODO
+
+    const handlerSelectTask = () => {
+        TaskStore.selectTask(task.id);
     };
 
-    const addTask = () => {
-        TaskStore.addTask();
-        setEditing(false);
+    const handlerDeleteTask = () => {
+        TaskStore.deleteTask(task.id);
     };
 
     return (
-        <div className='task'>
+        <div
+            className='task'
+            onClick={handlerSelectTask}
+        >
             <div
                 className='item'
             >
@@ -63,32 +63,13 @@ export const TaskItem = observer(({ task }: React.PropsWithChildren<ITask<IObjec
                 <input
                     type='checkbox'
                 />
-                <div>
+                {
+                    <div>
 
-                </div>
+                    </div>
+                }
             </div>
-            {editing && (
-                <div className='item__edit'>
-                    <input
-                        type='text'
-                        placeholder='Заголовок задачи'
-                        onChange={(e) => {TaskStore.titleHandler(e.target.value);}}
-                    />
-                    <textarea
-                        placeholder='Текст задачи'
-                        rows={3}
-                        onChange={(e) => {TaskStore.textHandler(e.target.value);}}
-                    />
-                    <button
-                        onClick={addTask}
-                    >Сохранить
-                    </button>
-                    <button
-                        onClick={handlerCloseEdit}
-                    >Отмена
-                    </button>
-                </div>
-            )}
+            {TaskStore.isOpen && <Modal />}
         </div>
     );
 });
