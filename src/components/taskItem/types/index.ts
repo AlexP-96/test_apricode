@@ -1,7 +1,8 @@
 import { ITaskStore } from '../../../store/types';
 
 export interface ITask {
-    task: ITaskStore
+    task: ITaskStore,
+    subTasks: ITaskStore[],
 }
 
 export interface IObjectTask {

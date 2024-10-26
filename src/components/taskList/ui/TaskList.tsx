@@ -16,13 +16,14 @@ export const TaskList: React.FC = observer(() => {
                         <TaskItem
                             key={task.id}
                             task={task}
+                            subTasks={task.subTasks}
                         />
                     );
                 })
             }
             <button
                 className='btn__add-todo'
-                onClick={() => TaskStore.openModal()}
+                onClick={() => TaskStore.openModal(true)}
             >
                 Добавить задачу легендарного уровня
             </button>

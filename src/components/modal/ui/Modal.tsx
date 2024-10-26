@@ -2,8 +2,20 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import TaskStore from '../../../store/TaskStore';
 import './Modal.css';
+import { ITask } from '../../taskItem/types';
 
-export const Modal = observer(() => {
+export const Modal: React.FC<React.PropsWithChildren<ITask>> = observer(({ task }) => {
+    const handlerInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        TaskStore.titleHandler(e.target.value);
+    };
+    const handlerInputText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        TaskStore.textHandler(e.target.value);
+    };
+
+    const handlerSaveTask = () => {
+
+    }
+
     return (
         <div className='modal'>
             <div
@@ -14,12 +26,14 @@ export const Modal = observer(() => {
                 <input
                     type='text'
                     placeholder='Заголовок задачи'
-                    onChange={(e) => {TaskStore.titleHandler(e.target.value);}}
+                    value={TaskStore.title}
+                    onChange={(e) => {handlerInputTitle(e);}}
                 />
                 <textarea
                     placeholder='Текст задачи'
                     rows={3}
-                    onChange={(e) => {TaskStore.textHandler(e.target.value);}}
+                    value={TaskStore.text}
+                    onChange={(e) => {handlerInputText(e);}}
                 />
                 <button
                     onClick={() => TaskStore.addTask()}

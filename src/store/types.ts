@@ -3,4 +3,5 @@ export interface ITaskStore {
     title: string;
     text: string;
     selectedTask: boolean | null;
+    subTasks: ITaskStore[];
 }

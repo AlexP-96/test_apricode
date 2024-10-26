@@ -18,7 +18,11 @@ class TaskStore {
         makeAutoObservable(this);
     }
 
-    openModal() {
+    openModal(flag?: boolean) {
+        if (flag) {
+            this.title = '';
+            this.text = '';
+        }
         this.isOpen = true;
     }
 
@@ -28,7 +32,7 @@ class TaskStore {
 
     selectTask(id: string) {
         this.selectedId = id;
-        this.showDetailsTask()
+        this.showDetailsTask();
     }
 
     defaultVisibleTasks() {
@@ -40,6 +44,7 @@ class TaskStore {
                     title: this.title,
                     text: this.text,
                     selectedTask: this.selectedTask,
+                    subTasks: [],
                 },
             ];
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
@@ -63,6 +68,7 @@ class TaskStore {
                 title: this.title,
                 text: this.text,
                 selectedTask: false,
+                subTasks: [],
             });
             localStorage.setItem('tasks', JSON.stringify(this.tasks));
             this.title = '';
@@ -71,8 +77,35 @@ class TaskStore {
         }
     }
 
+    addSubTask(id: string) {
+        this.openModal();
+        this.tasks.filter(task => task.id === id)[0].subTasks.push({
+            id: uuidv4(),
+            title: this.title,
+            text: this.text,
+            selectedTask: false,
+            subTasks: [],
+        });
+
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+        this.title = '';
+        this.text = '';
+
+    }
+
     deleteTask(id: string) {
         this.tasks = this.tasks.filter(task => task.id !== id);
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    }
+
+    editTask(id: string) {
+        this.openModal();
+        this.tasks.filter(task => {
+            if (task.id === id) {
+                this.title = task.title;
+                this.text = task.text;
+            }
+        });
     }
 
     showDetailsTask(id = this.selectedId) {

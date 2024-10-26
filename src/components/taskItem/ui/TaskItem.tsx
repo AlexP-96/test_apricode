@@ -10,26 +10,36 @@ import {
 } from '../types';
 import TaskStore from '../../../store/TaskStore';
 
-export const TaskItem: React.FC<React.PropsWithChildren<ITask>> = observer(({ task }) => {
+export const TaskItem: React.FC<React.PropsWithChildren<ITask>> = observer(({
+    task,
+    subTasks,
+}) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [checked, setChecked] = useState(false);
-
-    const handlerOpenEdit = () => {
-        console.log(TaskStore);
-    };
 
     const handlerChecked = (e: React.MouseEvent<HTMLElement>) => {
         setIsExpanded(!isExpanded);
     };
 
-    const handlerSelectTask = () => {
+    const handlerSelectTask = (e: React.MouseEvent<HTMLElement>) => {
         TaskStore.selectTask(task.id);
     };
 
-    const handlerDeleteTask = () => {
+    const handlerDeleteTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         TaskStore.deleteTask(task.id);
     };
 
+    const handlerEditTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        TaskStore.editTask(task.id);
+    };
+
+    const handlerAddTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        TaskStore.addSubTask(task.id);
+    };
+    console.log(task);
     return (
         <div
             className='task'
@@ -50,10 +60,11 @@ export const TaskItem: React.FC<React.PropsWithChildren<ITask>> = observer(({ ta
                 </span>
                 <button
                     className='item__add-btn'
-                    onClick={handlerOpenEdit}
+                    onClick={handlerAddTask}
                 >+
                 </button>
                 <button
+                    onClick={handlerEditTask}
                 >✏️
                 </button>
                 <button
@@ -63,13 +74,12 @@ export const TaskItem: React.FC<React.PropsWithChildren<ITask>> = observer(({ ta
                 <input
                     type='checkbox'
                 />
-                {
-                    <div>
 
-                    </div>
-                }
             </div>
-            {TaskStore.isOpen && <Modal />}
+            {TaskStore.isOpen && <Modal
+                task={task}
+                subTasks={subTasks}
+            />}
         </div>
     );
 });
